@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>mailinglist</name>
-    <description>Mailing list</description>
+    <description>Mailing list users</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
