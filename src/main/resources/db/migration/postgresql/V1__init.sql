@@ -10,6 +10,38 @@ CREATE TABLE user_app
   profile           CHARACTER VARYING NOT NULL
 );
 
-insert into user_app (id, first_name, last_name, email, password, profile) values (1, 'adminstrador', 'admin', 'admin@gmail.com',
-'$2a$10$6YlPqyAhIIxI2pRFROWX7ejJ3.TW4lgBZUEd3d76qIXqysC8vPB0O', 'ROLE_ADMIN');
+create table category
+(
+  id  BIGSERIAL PRIMARY KEY,
+  category CHARACTER VARYING NOT NULL
+);
+
+CREATE TABLE contact
+(
+  id                          BIGSERIAL PRIMARY KEY,
+  user_name_instagram        CHARACTER VARYING NOT NULL,
+  registration_date          date NOT NULL default now(),
+  gender                     CHARACTER VARYING NOT NULL,
+  user_app_id                int not null,
+  category_id                int not null ,
+  foreign key (user_app_id) references user_app(id),
+  foreign key (category_id) references category(id)
+);
+
+create table function
+(
+   id  BIGSERIAL PRIMARY KEY,
+   function CHARACTER VARYING NOT NULL
+);
+
+create table contact_function
+(
+  id  BIGSERIAL PRIMARY KEY,
+  contact_id int not null,
+  function_id int not null,
+  foreign key (contact_id) references contact(id),
+  foreign key (function_id) references function(id)
+);
+
+
 
