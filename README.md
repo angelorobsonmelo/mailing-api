@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/angelorobsonmelo/alternative-scenes-api.svg?branch=master)](https://travis-ci.org/angelorobsonmelo/alternative-scenes-api)
-
+[![Build Status](https://travis-ci.org/angelorobsonmelo/mailing-api.svg?branch=master)](https://travis-ci.org/angelorobsonmelo/mailing-api)
 ## Mailing List
  Mailing List system API with Java and Spring Boot.
  ### RESTful API Details
