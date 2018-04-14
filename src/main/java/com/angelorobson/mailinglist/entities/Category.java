@@ -1,5 +1,8 @@
 package com.angelorobson.mailinglist.entities;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -23,6 +26,8 @@ public class Category implements Serializable {
     }
 
     @Column(nullable = false)
+    @NotEmpty(message = "Category can not be empty.")
+    @Length(min = 3, max = 200, message = "Category must contain between 3 and 200 characters.")
     public String getCategory() {
         return category;
     }

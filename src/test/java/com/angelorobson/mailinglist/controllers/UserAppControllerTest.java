@@ -24,7 +24,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +31,8 @@ import static com.angelorobson.mailinglist.builders.UserAppBuilder.oneUserWithNa
 import static com.angelorobson.mailinglist.builders.UserAppDtoBuilder.oneUserDotWithNameManoel;
 import static com.angelorobson.mailinglist.builders.UserAppDtoBuilder.oneUserDtoWithNameJoao;
 import static java.util.Arrays.asList;
-import static java.util.Optional.*;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.any;
