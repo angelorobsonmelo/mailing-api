@@ -54,7 +54,6 @@ public interface UserAppService {
      * Remove a user database.
      *
      * @param id
-     * @return UserApp
      */
     void remove(Long id);
 }
