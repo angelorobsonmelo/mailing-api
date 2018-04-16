@@ -58,7 +58,7 @@ public class ContactRepositoryTest {
     public void setUp() {
         Category patner = new Category();
         patner.setCategory("Patner");
-       patner = categoryService.persist(patner);
+        patner = categoryService.persist(patner);
 
         Function model = new Function();
         model.setFunction("Model");
@@ -91,5 +91,10 @@ public class ContactRepositoryTest {
         Page<Contact> contacts = contactRepository.findAll(page);
 
         assertThat(contacts.getTotalElements(), is(equalTo(1L)));
+    }
+
+    @Test
+    public void it_should_return_contacts_by_functions() {
+
     }
 }

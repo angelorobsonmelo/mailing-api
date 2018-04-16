@@ -1,5 +1,6 @@
 package com.angelorobson.mailinglist.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -41,7 +42,8 @@ public class Function implements Serializable {
         this.function = function;
     }
 
-    @ManyToMany(mappedBy = "functions", cascade = ALL, fetch = LAZY)
+    @ManyToMany(cascade = ALL, fetch = LAZY)
+    @JsonIgnore
     public List<Contact> getContacts() {
         return contacts;
     }

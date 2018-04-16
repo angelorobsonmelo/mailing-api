@@ -46,7 +46,7 @@ public class FunctionController {
   @GetMapping
   public ResponseEntity<Response<Page<Function>>> findAll(
     @RequestParam(value = "pag", defaultValue = "0") int pag,
-    @RequestParam(value = "ord", defaultValue = "category") String ord,
+    @RequestParam(value = "ord", defaultValue = "function") String ord,
     @RequestParam(value = "dir", defaultValue = "ASC") String dir) {
     log.info("Searching for functions page: {}", pag);
     Response<Page<Function>> response = new Response<>();
