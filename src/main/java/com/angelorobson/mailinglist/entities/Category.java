@@ -5,7 +5,11 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
+
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 public class Category implements Serializable {
@@ -14,6 +18,7 @@ public class Category implements Serializable {
 
     private Long id;
     private String category;
+    private List<Contact> contacts;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,6 +39,16 @@ public class Category implements Serializable {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    @OneToMany(mappedBy = "category", fetch = LAZY, cascade = ALL)
+    public List<Contact> getContacts() {
+        return contacts;
+    }
+
+
+    public void setContacts(List<Contact> contacts) {
+        this.contacts = contacts;
     }
 
     @Override

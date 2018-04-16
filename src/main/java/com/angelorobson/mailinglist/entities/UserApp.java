@@ -4,6 +4,7 @@ import com.angelorobson.mailinglist.enums.ProfileEnum;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -18,6 +19,7 @@ public class UserApp implements Serializable {
   private String email;
   private String password;
   private ProfileEnum profile;
+  private List<Contact> contacts;
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -73,6 +75,14 @@ public class UserApp implements Serializable {
     this.profile = profile;
   }
 
+  @OneToMany(mappedBy = "userApp", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  public List<Contact> getContacts() {
+    return contacts;
+  }
+
+  public void setContacts(List<Contact> contacts) {
+    this.contacts = contacts;
+  }
 
   @Override
   public boolean equals(Object o) {

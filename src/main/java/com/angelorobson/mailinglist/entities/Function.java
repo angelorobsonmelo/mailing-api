@@ -5,6 +5,11 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Objects;
+
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 public class Function implements Serializable {
@@ -13,6 +18,7 @@ public class Function implements Serializable {
 
     private Long id;
     private String function;
+    private List<Contact> contacts;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,5 +39,39 @@ public class Function implements Serializable {
 
     public void setFunction(String function) {
         this.function = function;
+    }
+
+    @ManyToMany(mappedBy = "functions", cascade = ALL, fetch = LAZY)
+    public List<Contact> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(List<Contact> contacts) {
+        this.contacts = contacts;
+    }
+
+    @Override
+    public String toString() {
+        return "Function{" +
+                "id=" + id +
+                ", function='" + function + '\'' +
+                ", contacts=" + contacts +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Function function1 = (Function) o;
+        return Objects.equals(id, function1.id) &&
+                Objects.equals(function, function1.function) &&
+                Objects.equals(contacts, function1.contacts);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, function, contacts);
     }
 }

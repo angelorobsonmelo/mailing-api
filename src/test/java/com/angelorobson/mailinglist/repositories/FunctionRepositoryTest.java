@@ -45,7 +45,7 @@ public class FunctionRepositoryTest {
     }
 
     @Test
-    public void it_should_return_categories() {
+    public void it_should_return_function() {
         List<Function> functions = functionRepository.findAll();
 
         assertThat(functions.size(), is(equalTo(3)));
