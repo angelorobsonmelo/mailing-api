@@ -1,14 +1,14 @@
 package com.angelorobson.mailinglist.controllers;
 
 import com.angelorobson.mailinglist.entities.Category;
+import com.angelorobson.mailinglist.entities.Function;
 import com.angelorobson.mailinglist.response.Response;
-import com.angelorobson.mailinglist.services.CategoryService;
+import com.angelorobson.mailinglist.services.FunctionService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -20,38 +20,39 @@ import java.util.Optional;
 
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.beans.BeanUtils.copyProperties;
+import static org.springframework.data.domain.Sort.Direction.*;
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/functions")
 @CrossOrigin(origins = "http://localhost:8080")
-public class CategoryController {
+public class FunctionController {
 
-  private static final Logger log = getLogger(CategoryController.class);
+  private static final Logger log = getLogger(FunctionController.class);
 
   @Autowired
-  private CategoryService categoryService;
+  private FunctionService functionService;
 
   @Value("${pagination.quantity_per_page}")
   private int quantityPerPage;
 
-  public CategoryController() {
+  public FunctionController() {
   }
 
   /**
-   * Return list of users
+   * Return list of function
    *
-   * @return ResponseEntity<Response<Page<UserAppDto>>>
+   * @return ResponseEntity<Response<Page<Function>>>
    */
   @GetMapping
-  public ResponseEntity<Response<Page<Category>>> findAll(
+  public ResponseEntity<Response<Page<Function>>> findAll(
     @RequestParam(value = "pag", defaultValue = "0") int pag,
     @RequestParam(value = "ord", defaultValue = "category") String ord,
     @RequestParam(value = "dir", defaultValue = "ASC") String dir) {
-    log.info("Searching for users page: {}", pag);
-    Response<Page<Category>> response = new Response<>();
+    log.info("Searching for functions page: {}", pag);
+    Response<Page<Function>> response = new Response<>();
 
-    PageRequest pageRequest = new PageRequest(pag, this.quantityPerPage, Sort.Direction.valueOf(dir), ord);
-    Page<Category> userAppDtos = this.categoryService.findAll(pageRequest);
+    PageRequest pageRequest = new PageRequest(pag, this.quantityPerPage, valueOf(dir), ord);
+    Page<Function> userAppDtos = this.functionService.findAll(pageRequest);
 
     response.setData(userAppDtos);
     return ResponseEntity.ok(response);
@@ -60,20 +61,20 @@ public class CategoryController {
   /**
    * Adds a new user.
    *
-   * @param category
+   * @param function
    * @param result
    * @return ResponseEntity<Response<UserAppDto>>
    */
   @PostMapping
-  public ResponseEntity<Response<Category>> save(@Valid @RequestBody Category category,
+  public ResponseEntity<Response<Function>> save(@Valid @RequestBody Function function,
                                                    BindingResult result) {
-    log.info("Adding Category: {}", category.toString());
-    Response<Category> response = new Response<>();
-    validateUser(category, result);
+    log.info("Adding Category: {}", function.toString());
+    Response<Function> response = new Response<>();
+    validateUser(function, result);
 
     if (hasErrors(result, response)) return ResponseEntity.badRequest().body(response);
 
-    Category categorySaved = this.categoryService.persist(category);
+    Function categorySaved = this.functionService.persist(function);
     response.setData(categorySaved);
     return ResponseEntity.ok(response);
   }
@@ -88,15 +89,15 @@ public class CategoryController {
   public ResponseEntity<Response<String>> remove(@PathVariable("id") Long id) {
     log.info("Removing category: {}", id);
     Response<String> response = new Response<>();
-    Optional<Category> categoryReturned = this.categoryService.findById(id);
+    Optional<Function> functionReturned = this.functionService.findById(id); 
 
-    if (!categoryReturned.isPresent()) {
+    if (!functionReturned.isPresent()) {
       log.info("Error removing because user ID: {} must be invalid.", id);
       response.getErrors().add("Error removing category. Record not found for id " + id);
       return ResponseEntity.badRequest().body(response);
     }
 
-    this.categoryService.remove(id);
+    this.functionService.remove(id);
     return ResponseEntity.ok(new Response<>());
   }
 
@@ -105,23 +106,23 @@ public class CategoryController {
    * Updates a user's data.
    *
    * @param id
-   * @param category
+   * @param function
    * @return ResponseEntity<Response<Category>>
    * @throws ParseException
    */
   @PutMapping(value = "/{id}")
-  public ResponseEntity<Response<Category>> update(@PathVariable("id") Long id,
-                                                     @Valid @RequestBody Category category, BindingResult result) {
-    log.info("Updates a category's data.: {}", category.toString());
-    Response<Category> response = new Response<>();
-    validateUser(category, result);
-    category.setId(id);
+  public ResponseEntity<Response<Function>> update(@PathVariable("id") Long id,
+                                                     @Valid @RequestBody Function function, BindingResult result) {
+    log.info("Updates a function's data.: {}", function.toString());
+    Response<Function> response = new Response<>();
+    validateUser(function, result);
+    function.setId(id);
 
-    Optional<Category> userReturned = this.categoryService.findById(category.getId());
+    Optional<Function> functionReturned = this.functionService.findById(function.getId());
 
-    if (userReturned.isPresent()) {
-       copyProperties(category, userReturned.get(), "id");
-        Category categoryEdited = this.categoryService.edit(category);
+    if (functionReturned.isPresent()) {
+       copyProperties(function, functionReturned.get(), "id");
+      Function categoryEdited = this.functionService.edit(function);
         response.setData(categoryEdited);
 
     } else {
@@ -147,7 +148,7 @@ public class CategoryController {
   }
 
 
-  private boolean hasErrors(BindingResult result, Response<Category> response) {
+  private boolean hasErrors(BindingResult result, Response<Function> response) {
     if (result.hasErrors()) {
       log.error("Error validating user: {}", result.getAllErrors());
       if (result.hasErrors()) {

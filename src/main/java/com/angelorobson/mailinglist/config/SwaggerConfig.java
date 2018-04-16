@@ -37,8 +37,8 @@ public class SwaggerConfig {
 	}
 
 	private ApiInfo apiInfo() {
-		return new ApiInfoBuilder().title("Alternative Scene API")
-				.description("Alternative Scene endpoint access API documentation.").version("1.0")
+		return new ApiInfoBuilder().title("Mailing List API")
+				.description("Mainlig List endpoint access API documentation.").version("1.0")
 				.build();
 	}
 
