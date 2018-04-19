@@ -37,7 +37,6 @@ public class ContactRepositoryImpl implements ContactRepositoryQuery {
     }
 
     private Predicate[] createConstraints(ContactFilter contactFilter, CriteriaBuilder builder, Root<Contact> root) {
-
         List<Predicate> predicates = new ArrayList<>();
 
         Join<Contact, Category> categoryJoin = root.join(Contact_.category);
