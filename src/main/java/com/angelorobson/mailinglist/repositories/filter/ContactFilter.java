@@ -48,4 +48,14 @@ public class ContactFilter {
     public void setFunctions(List<Function> functions) {
         this.functions = functions;
     }
+
+    @Override
+    public String toString() {
+        return "ContactFilter{" +
+                "userNameInstagram='" + userNameInstagram + '\'' +
+                ", gender=" + gender +
+                ", category=" + category +
+                ", functions=" + functions +
+                '}';
+    }
 }
