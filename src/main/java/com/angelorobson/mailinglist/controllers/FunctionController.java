@@ -1,6 +1,5 @@
 package com.angelorobson.mailinglist.controllers;
 
-import com.angelorobson.mailinglist.entities.Category;
 import com.angelorobson.mailinglist.entities.Function;
 import com.angelorobson.mailinglist.response.Response;
 import com.angelorobson.mailinglist.services.FunctionService;
@@ -20,7 +19,7 @@ import java.util.Optional;
 
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.beans.BeanUtils.copyProperties;
-import static org.springframework.data.domain.Sort.Direction.*;
+import static org.springframework.data.domain.Sort.Direction.valueOf;
 
 @RestController
 @RequestMapping("/functions")

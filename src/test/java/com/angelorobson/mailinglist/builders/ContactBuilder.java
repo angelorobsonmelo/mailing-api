@@ -39,6 +39,44 @@ public class ContactBuilder {
         return builder;
     }
 
+    public static ContactBuilder oneContactWithUserNameInstagramJohn() {
+        Category category = new Category();
+        category.setCategory("Patner");
+
+        Function model = new Function();
+        model.setFunction("Model");
+        Function modelStories = new Function();
+        model.setFunction("Model Stories");
+
+        ContactBuilder builder = new ContactBuilder();
+        builder.contact = new Contact();
+        builder.contact.setUserNameInstagram("@John");
+        builder.contact.setCategory(category);
+        builder.contact.setGender(MALE);
+        builder.contact.setUserApp(UserAppBuilder.oneUserWithNameJoao().build());
+        builder.contact.setFunctions(asList(model, modelStories));
+
+        return builder;
+    }
+
+    public static ContactBuilder oneContactWithUserNameInstagramRobert() {
+        Category candidate = new Category();
+        candidate.setCategory("Candidate");
+
+        Function photographer = new Function();
+        photographer.setFunction("Photographer");
+
+        ContactBuilder builder = new ContactBuilder();
+        builder.contact = new Contact();
+        builder.contact.setUserNameInstagram("@Robert");
+        builder.contact.setCategory(candidate);
+        builder.contact.setGender(MALE);
+        builder.contact.setUserApp(UserAppBuilder.oneUserWithNameJoao().build());
+        builder.contact.setFunctions(asList(photographer));
+
+        return builder;
+    }
+
     public Contact build() {
         return contact;
     }
