@@ -96,6 +96,22 @@ public class ContactController {
         return ResponseEntity.ok(response);
     }
 
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Response<String>> remove(@PathVariable("id") Long id) {
+        log.info("Removing category: {}", id);
+        Response<String> response = new Response<>();
+        Optional<Contact> contactReturned = this.contactService.findById(id);
+
+        if (!contactReturned.isPresent()) {
+            log.info("Error removing because user ID: {} must be invalid.", id);
+            response.getErrors().add("Error removing category. Record not found for id " + id);
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        this.contactService.remove(id);
+        return ResponseEntity.ok(new Response<>());
+    }
+
     private Contact convertContactSaveDtoToEntity(ContactSaveDto contactSaveDto, BindingResult result) {
         Contact contact = getContactEntityFromDto(contactSaveDto);
 

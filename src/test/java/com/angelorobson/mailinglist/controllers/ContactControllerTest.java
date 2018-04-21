@@ -31,14 +31,12 @@ import java.util.stream.Collectors;
 
 import static com.angelorobson.mailinglist.builders.ContactBuilder.oneContactWithUserNameInstagramJohn;
 import static com.angelorobson.mailinglist.builders.ContactBuilder.oneContactWithUserNameInstagramRobert;
-import static com.angelorobson.mailinglist.builders.UserAppBuilder.oneUserWithNameJoao;
 import static java.util.Arrays.asList;
 import static java.util.Optional.of;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -115,6 +113,15 @@ public class ContactControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data").isNotEmpty())
                 .andExpect(jsonPath("$.errors").isEmpty());
+    }
+
+    @Test
+    @WithMockUser
+    public void it_should_remove() throws Exception {
+        given(this.contactService.findById(anyLong())).willReturn(of(new Contact()));
+
+        mockMvc.perform(delete(URL_BASE + "/" +ID))
+                .andExpect(status().isOk());
     }
 
     private String getJsonContactFilter() throws JsonProcessingException {
