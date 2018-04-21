@@ -5,11 +5,14 @@ import com.angelorobson.mailinglist.entities.Function;
 import com.angelorobson.mailinglist.enums.GenderEnum;
 
 import javax.persistence.Enumerated;
+import java.io.Serializable;
 import java.util.List;
 
 import static javax.persistence.EnumType.STRING;
 
-public class ContactFilter {
+public class ContactFilter implements Serializable {
+
+    private static final long serialVersionUID = -5754246207015712518L;
 
     private String userNameInstagram;
     private GenderEnum gender;

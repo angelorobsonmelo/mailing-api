@@ -41,19 +41,26 @@ public class ContactBuilder {
 
     public static ContactBuilder oneContactWithUserNameInstagramJohn() {
         Category category = new Category();
+        category.setId(1L);
         category.setCategory("Patner");
 
+       UserApp userApp = UserAppBuilder.oneUserWithNameJoao().build();
+       userApp.setId(1L);
+
         Function model = new Function();
+        model.setId(1L);
         model.setFunction("Model");
         Function modelStories = new Function();
-        model.setFunction("Model Stories");
+        modelStories.setId(2L);
+        modelStories.setFunction("Model Stories");
 
         ContactBuilder builder = new ContactBuilder();
         builder.contact = new Contact();
+        builder.contact.setId(1L);
         builder.contact.setUserNameInstagram("@John");
         builder.contact.setCategory(category);
         builder.contact.setGender(MALE);
-        builder.contact.setUserApp(UserAppBuilder.oneUserWithNameJoao().build());
+        builder.contact.setUserApp(userApp);
         builder.contact.setFunctions(asList(model, modelStories));
 
         return builder;

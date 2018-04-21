@@ -1,7 +1,7 @@
 package com.angelorobson.mailinglist.controllers;
 
 
-import com.angelorobson.mailinglist.builders.ContactBuilder;
+import com.angelorobson.mailinglist.dtos.ContactSaveDto;
 import com.angelorobson.mailinglist.entities.Contact;
 import com.angelorobson.mailinglist.entities.Function;
 import com.angelorobson.mailinglist.repositories.filter.ContactFilter;
@@ -12,27 +12,27 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static com.angelorobson.mailinglist.builders.ContactBuilder.*;
+import static com.angelorobson.mailinglist.builders.ContactBuilder.oneContactWithUserNameInstagramJohn;
+import static com.angelorobson.mailinglist.builders.ContactBuilder.oneContactWithUserNameInstagramRobert;
 import static java.util.Arrays.asList;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -72,12 +72,27 @@ public class ContactControllerTest {
 
         String contactFilterJson = getJsonContactFilter();
 
-        mockMvc.perform(post(URL_BASE)
+        mockMvc.perform(post(URL_BASE + "/filter")
                 .content(contactFilterJson)
-                .contentType("application/json"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.content[0].userNameInstagram").value(john.getUserNameInstagram()))
                 .andExpect(jsonPath("$.data.content[1].userNameInstagram").value(robert.getUserNameInstagram()))
+                .andExpect(jsonPath("$.errors").isEmpty());
+    }
+
+    @Test
+    @WithMockUser
+    public void it_should_persist() throws Exception {
+        given(contactService.persist(any(Contact.class))).willReturn(john);
+
+        mockMvc.perform(post(URL_BASE)
+                .content(getJsonContactSaveDto())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data").isNotEmpty())
                 .andExpect(jsonPath("$.errors").isEmpty());
     }
 
@@ -93,6 +108,22 @@ public class ContactControllerTest {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new Jdk8Module());
         return mapper.writeValueAsString(contactFilter);
+    }
+
+    private String getJsonContactSaveDto() throws JsonProcessingException {
+        Contact contact = oneContactWithUserNameInstagramJohn().build();
+        List<Long> functions = contact.getFunctions().stream().map(Function::getId).collect(Collectors.toList());
+
+        ContactSaveDto contactSaveDto = new ContactSaveDto();
+        contactSaveDto.setCategoryId(contact.getCategory().getId());
+        contactSaveDto.setGender(contact.getGender().toString());
+        contactSaveDto.setUserAppId(contact.getUserApp().getId());
+        contactSaveDto.setFunctionsIds(functions);
+        contactSaveDto.setUserNameInstagram(contact.getUserNameInstagram());
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new Jdk8Module());
+        return mapper.writeValueAsString(contactSaveDto);
     }
 
 }
