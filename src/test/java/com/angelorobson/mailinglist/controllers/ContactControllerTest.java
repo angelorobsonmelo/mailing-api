@@ -26,14 +26,19 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.angelorobson.mailinglist.builders.ContactBuilder.oneContactWithUserNameInstagramJohn;
 import static com.angelorobson.mailinglist.builders.ContactBuilder.oneContactWithUserNameInstagramRobert;
+import static com.angelorobson.mailinglist.builders.UserAppBuilder.oneUserWithNameJoao;
 import static java.util.Arrays.asList;
+import static java.util.Optional.of;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -52,6 +57,7 @@ public class ContactControllerTest {
     private Page<Contact> pagedResponse;
 
     private static final String URL_BASE = "/contacts";
+    private static final Long ID = 1L;
 
     private Contact john;
     private Contact robert;
@@ -88,7 +94,22 @@ public class ContactControllerTest {
         given(contactService.persist(any(Contact.class))).willReturn(john);
 
         mockMvc.perform(post(URL_BASE)
-                .content(getJsonContactSaveDto())
+                .content(getJsonContactSaveDto(false))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data").isNotEmpty())
+                .andExpect(jsonPath("$.errors").isEmpty());
+    }
+
+    @Test
+    @WithMockUser
+    public void it_should_edit() throws Exception {
+        given(contactService.findById(anyLong())).willReturn(of(john));
+        given(contactService.edit(any(Contact.class))).willReturn(john);
+
+        mockMvc.perform(put(URL_BASE + "/" + ID)
+                .content(getJsonContactSaveDto(true))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -110,11 +131,16 @@ public class ContactControllerTest {
         return mapper.writeValueAsString(contactFilter);
     }
 
-    private String getJsonContactSaveDto() throws JsonProcessingException {
+    private String getJsonContactSaveDto(Boolean isEditing) throws JsonProcessingException {
         Contact contact = oneContactWithUserNameInstagramJohn().build();
         List<Long> functions = contact.getFunctions().stream().map(Function::getId).collect(Collectors.toList());
 
         ContactSaveDto contactSaveDto = new ContactSaveDto();
+
+        if (isEditing) {
+            contactSaveDto.setId(Optional.of(contact.getId()));
+        }
+
         contactSaveDto.setCategoryId(contact.getCategory().getId());
         contactSaveDto.setGender(contact.getGender().toString());
         contactSaveDto.setUserAppId(contact.getUserApp().getId());

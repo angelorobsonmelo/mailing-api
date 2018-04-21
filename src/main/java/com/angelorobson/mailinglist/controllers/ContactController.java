@@ -11,7 +11,6 @@ import com.angelorobson.mailinglist.enums.GenderEnum;
 import com.angelorobson.mailinglist.repositories.filter.ContactFilter;
 import com.angelorobson.mailinglist.response.Response;
 import com.angelorobson.mailinglist.services.ContactService;
-import org.h2.engine.User;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,8 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.data.domain.Sort.Direction.valueOf;
@@ -71,7 +69,7 @@ public class ContactController {
         Response<ContactDto> response = new Response<>();
         validateUser(contactSaveDto, result);
 
-        Contact contact = convertContactSaveDtoToEntity(contactSaveDto);
+        Contact contact = convertContactSaveDtoToEntity(contactSaveDto, result);
         Contact contactReturned = this.contactService.persist(contact);
 
         ContactDto contactDto = convertContactEntityToDto(contactReturned);
@@ -80,7 +78,47 @@ public class ContactController {
         return ResponseEntity.ok(response);
     }
 
-    private Contact convertContactSaveDtoToEntity(ContactSaveDto contactSaveDto) {
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Response<ContactDto>> update(@PathVariable("id") Long id,
+            @RequestBody ContactSaveDto contactSaveDto, BindingResult result) {
+        log.info("Updating a contact : {}", contactSaveDto.toString());
+        Response<ContactDto> response = new Response<>();
+        validateUser(contactSaveDto, result);
+        contactSaveDto.setId(Optional.of(id));
+
+        Contact contact = convertContactSaveDtoToEntity(contactSaveDto, result);
+
+        Contact contactReturned = this.contactService.edit(contact);
+
+        ContactDto contactDto = convertContactEntityToDto(contactReturned);
+
+        response.setData(contactDto);
+        return ResponseEntity.ok(response);
+    }
+
+    private Contact convertContactSaveDtoToEntity(ContactSaveDto contactSaveDto, BindingResult result) {
+        Contact contact = getContactEntityFromDto(contactSaveDto);
+
+        if (contactSaveDto.getId().isPresent()) { 
+            Optional<Contact> contactDataBaseReturned = this.contactService.findById(contactSaveDto.getId().get());
+            if (contactDataBaseReturned.isPresent()) {
+                Contact contactEntityFromDto = getContactEntityFromDto(contactSaveDto);
+
+                contactDataBaseReturned.get().setCategory(contactEntityFromDto.getCategory());
+                contactDataBaseReturned.get().setUserNameInstagram(contactEntityFromDto.getUserNameInstagram());
+                contactDataBaseReturned.get().setFunctions(contactEntityFromDto.getFunctions());
+                contactDataBaseReturned.get().setGender(contactEntityFromDto.getGender());
+
+                return  contactDataBaseReturned.get();
+            } else {
+                result.addError(new ObjectError("user", "User not found."));
+            }
+        }
+
+        return contact;
+    }
+
+    private Contact getContactEntityFromDto(ContactSaveDto contactSaveDto) {
         Contact contact = new Contact();
         List<Function> functions = convertToFunctionsEntity(contactSaveDto.getFunctionsIds());
         UserApp userApp = new UserApp();
@@ -93,7 +131,6 @@ public class ContactController {
         contact.setFunctions(functions);
         contact.setGender(GenderEnum.valueOf(contactSaveDto.getGender()));
         contact.setUserNameInstagram(contactSaveDto.getUserNameInstagram());
-
         return contact;
     }
 
