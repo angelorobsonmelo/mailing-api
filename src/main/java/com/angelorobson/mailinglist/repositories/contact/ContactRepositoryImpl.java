@@ -41,12 +41,16 @@ public class ContactRepositoryImpl implements ContactRepositoryQuery {
 
         Join<Contact, Category> categoryJoin = root.join(Contact_.category);
 
-        if (!isEmpty(contactFilter.getCategory().getCategory())) {
-            predicates.add(builder.equal(categoryJoin.get(Category_.category), contactFilter.getCategory().getCategory()));
+        if (contactFilter.getCategory() != null) {
+            if (!isEmpty(contactFilter.getCategory().getCategory())) {
+                predicates.add(builder.equal(categoryJoin.get(Category_.category), contactFilter.getCategory().getCategory()));
+            }
         }
 
-        if (!contactFilter.getFunctions().isEmpty()) {
-            predicates.add(root.join(Contact_.functions).in(contactFilter.getFunctions()));
+        if (contactFilter.getFunctions() != null) {
+            if (!contactFilter.getFunctions().isEmpty()) {
+                predicates.add(root.join(Contact_.functions).in(contactFilter.getFunctions()));
+            }
         }
 
         if (!isEmpty(contactFilter.getUserNameInstagram())) {
@@ -54,9 +58,11 @@ public class ContactRepositoryImpl implements ContactRepositoryQuery {
                     builder.lower(root.get(Contact_.userNameInstagram)), "%" + contactFilter.getUserNameInstagram().toLowerCase() + "%"));
         }
 
-        if (!isEmpty(contactFilter.getGender())) {
-            predicates.add(
-                    builder.equal(root.get(Contact_.gender), contactFilter.getGender()));
+        if (contactFilter.getGender() != null) {
+            if (!isEmpty(contactFilter.getGender())) {
+                predicates.add(
+                        builder.equal(root.get(Contact_.gender), contactFilter.getGender()));
+            }
         }
 
         return predicates.toArray(new Predicate[predicates.size()]);

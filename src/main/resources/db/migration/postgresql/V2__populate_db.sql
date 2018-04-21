@@ -14,13 +14,13 @@ insert into function(id, function) values (2, 'Modelo de editorial');
 insert into function(id, function) values (3, 'Fotográfo');
 
 insert into contact(id, user_name_instagram, user_app_id, category_id, gender) values (
-1, '@jose', 1, 1, 'MASCULINO');
+1, '@jose', 1, 1, 'MALE');
 
 insert into contact(id, user_name_instagram, user_app_id, category_id, gender) values (
-2, '@maria', 2, 2, 'FEMININO');
+2, '@maria', 2, 2, 'FEMALE');
 
 insert into contact(id, user_name_instagram, user_app_id, category_id, gender) values (
-3, '@manoel', 1, 1, 'MASCULINO');
+3, '@manoel', 1, 1, 'MALE');
 
 INSERT INTO contact_function (contact_id, function_id) values (1, 1);
 INSERT INTO contact_function (contact_id, function_id) values (1, 2);

@@ -72,7 +72,7 @@ public class ContactControllerTest {
 
         String contactFilterJson = getJsonContactFilter();
 
-        mockMvc.perform(get(URL_BASE)
+        mockMvc.perform(post(URL_BASE)
                 .content(contactFilterJson)
                 .contentType("application/json"))
                 .andExpect(status().isOk())

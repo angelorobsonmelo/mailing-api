@@ -17,7 +17,7 @@ public class ContactDto implements Serializable {
         private Long id;
         private String userNameInstagram;
         private GenderEnum gender;
-        private UserApp userApp;
+        private UserAppDto userAppDto;
         private Category category;
         private LocalDate registrationDate;
         private List<Function> functions;
@@ -46,12 +46,12 @@ public class ContactDto implements Serializable {
         this.gender = gender;
     }
 
-    public UserApp getUserApp() {
-        return userApp;
+    public UserAppDto getUserAppDto() {
+        return userAppDto;
     }
 
-    public void setUserApp(UserApp userApp) {
-        this.userApp = userApp;
+    public void setUserAppDto(UserAppDto userAppDto) {
+        this.userAppDto = userAppDto;
     }
 
     public Category getCategory() {
@@ -86,7 +86,7 @@ public class ContactDto implements Serializable {
         return Objects.equals(id, that.id) &&
                 Objects.equals(userNameInstagram, that.userNameInstagram) &&
                 gender == that.gender &&
-                Objects.equals(userApp, that.userApp) &&
+                Objects.equals(userAppDto, that.userAppDto) &&
                 Objects.equals(category, that.category) &&
                 Objects.equals(registrationDate, that.registrationDate) &&
                 Objects.equals(functions, that.functions);
@@ -95,7 +95,7 @@ public class ContactDto implements Serializable {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, userNameInstagram, gender, userApp, category, registrationDate, functions);
+        return Objects.hash(id, userNameInstagram, gender, userAppDto, category, registrationDate, functions);
     }
 
     @Override
@@ -104,7 +104,7 @@ public class ContactDto implements Serializable {
                 "id=" + id +
                 ", userNameInstagram='" + userNameInstagram + '\'' +
                 ", gender=" + gender +
-                ", userApp=" + userApp +
+                ", userAppDto=" + userAppDto +
                 ", category=" + category +
                 ", registrationDate=" + registrationDate +
                 ", functions=" + functions +

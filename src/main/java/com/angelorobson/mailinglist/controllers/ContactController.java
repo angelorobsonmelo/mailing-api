@@ -1,6 +1,7 @@
 package com.angelorobson.mailinglist.controllers;
 
 import com.angelorobson.mailinglist.dtos.ContactDto;
+import com.angelorobson.mailinglist.dtos.UserAppDto;
 import com.angelorobson.mailinglist.entities.Contact;
 import com.angelorobson.mailinglist.repositories.filter.ContactFilter;
 import com.angelorobson.mailinglist.response.Response;
@@ -33,7 +34,7 @@ public class ContactController {
 
     public ContactController() {}
 
-    @GetMapping
+    @PostMapping
     public ResponseEntity<Response<Page<ContactDto>>> findAllByFilter(
             @RequestParam(value = "pag", defaultValue = "0") int pag,
             @RequestParam(value = "ord", defaultValue = "userNameInstagram") String ord,
@@ -52,9 +53,18 @@ public class ContactController {
     }
 
     private ContactDto convertContactEntityToDto(Contact contact) {
-        ContactDto contactDto = new ContactDto();
-        copyProperties(contact, contactDto);
+        UserAppDto userAppDto = new UserAppDto();
+        userAppDto.setFirstName(contact.getUserApp().getFirstName());
+        userAppDto.setLastName(contact.getUserApp().getLastName());
+        userAppDto.setEmail(contact.getUserApp().getEmail());
 
+        ContactDto contactDto = new ContactDto();
+        contactDto.setId(contact.getId());
+        contactDto.setUserAppDto(userAppDto);
+        contactDto.setFunctions(contact.getFunctions());
+        contactDto.setCategory(contact.getCategory());
+        contactDto.setGender(contact.getGender());
+        contactDto.setUserNameInstagram(contact.getUserNameInstagram());
         return contactDto;
     }
 
