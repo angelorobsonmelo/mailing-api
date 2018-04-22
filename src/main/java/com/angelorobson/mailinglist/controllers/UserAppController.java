@@ -170,6 +170,8 @@ public class UserAppController {
    */
   private UserApp convertUserSaveAppDToToUserApp(UserAppSaveDto userAppSaveDto) {
     UserApp userApp = new UserApp();
+    userApp.setFirstName(userAppSaveDto.getFirstName());
+    userApp.setLastName(userAppSaveDto.getLastName());
     userApp.setEmail(userAppSaveDto.getEmail());
     userApp.setPassword(generateBCrypt(userAppSaveDto.getPassword()));
     userApp.setProfile(ProfileEnum.ROLE_USER);
@@ -190,7 +192,9 @@ public class UserAppController {
     if (userAppEditDto.getId().isPresent()) {
       Optional<UserApp> user = this.userAppService.findById(userAppEditDto.getId().get());
       if (user.isPresent()) {
-        if (userAppEditDto.getPassword() != null) {
+        boolean isPasswordFilled = userAppEditDto.getPassword() != null && !userAppEditDto.getPassword().isEmpty();
+
+        if (isPasswordFilled) {
           user.get().setPassword(generateBCrypt(userAppEditDto.getPassword()));
         }
 

@@ -42,7 +42,7 @@ public class Function implements Serializable {
         this.function = function;
     }
 
-    @ManyToMany(cascade = ALL, fetch = LAZY)
+    @ManyToMany(cascade = ALL, fetch = LAZY, mappedBy = "functions")
     @JsonIgnore
     public List<Contact> getContacts() {
         return contacts;
