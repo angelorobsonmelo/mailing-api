@@ -30,7 +30,7 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 
 @RestController
 @RequestMapping("/users_app")
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "*")
 public class UserAppController {
 
   private static final Logger log = getLogger(UserAppController.class);

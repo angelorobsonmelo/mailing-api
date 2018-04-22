@@ -23,7 +23,7 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 
 @RestController
 @RequestMapping("/categories")
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "*")
 public class CategoryController {
 
   private static final Logger log = getLogger(CategoryController.class);

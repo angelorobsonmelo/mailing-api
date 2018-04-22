@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/angelorobsonmelo/mailing-api.svg?branch=master)](https://travis-ci.org/angelorobsonmelo/mailing-api)
 ## Mailing List
+ It is a system for registering contacts, partners or candidates for any function.
  Mailing List system API with Java and Spring Boot.
  ### RESTful API Details
 The RESTful API for Mailing List contains the following features:
@@ -8,14 +9,13 @@ The RESTful API for Mailing List contains the following features:
 * Authentication and authorization with Spring Security and JWT (JSON Web Token) tokens
 * Database migration with Flyway
 * Unit tests and integration with JUnit and Mockito
-* Caching with EhCache
 * Continuous integration with TravisCI
 * Swagger documentation
  ### Running the application
 Be sure to have Maven installed and added to the PATH of your operating system, just like Git.
  ```
- git clone https://github.com/angelorobsonmelo/alternativeScene.git
- cd alternativeScene
+ git clone https://github.com/angelorobsonmelo/mailing-api.git
+ cd mailing-api
  mvn spring-boot:run
  Access the endpoints through the http://localhost:8080 url
  ```

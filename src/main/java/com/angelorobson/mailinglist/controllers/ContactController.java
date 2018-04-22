@@ -31,7 +31,7 @@ import static org.springframework.data.domain.Sort.Direction.valueOf;
 
 @RestController
 @RequestMapping("/contacts")
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "*")
 public class ContactController {
 
     private static final Logger log = getLogger(ContactController.class);
