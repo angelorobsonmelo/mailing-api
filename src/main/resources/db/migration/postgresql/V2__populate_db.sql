@@ -1,10 +1,10 @@
 
 insert into user_app (id, first_name, last_name, email, password, profile) values (1, 'adminstrador', 'admin', 'admin@gmail.com',
-'$2a$10$6YlPqyAhIIxI2pRFROWX7ejJ3.TW4lgBZUEd3d76qIXqysC8vPB0O', 'ROLE_ADMIN');
+'$2a$10$kyAN0ujWU.3n2EhuHMJGF.3IEe.jyJ/rmf1Wt.qhC2R5Z2psEw12i', 'ROLE_ADMIN');
 
 
 insert into user_app (id, first_name, last_name, email, password, profile) values (2, 'usu', 'user', 'user@gmail.com',
-'$2a$10$6YlPqyAhIIxI2pRFROWX7ejJ3.TW4lgBZUEd3d76qIXqysC8vPB0O', 'ROLE_USER');
+'$2a$10$kyAN0ujWU.3n2EhuHMJGF.3IEe.jyJ/rmf1Wt.qhC2R5Z2psEw12i', 'ROLE_USER');
 
 insert into category(id, category) values (1, 'Parceiro');
 insert into category(id, category) values (2, 'Candidato');

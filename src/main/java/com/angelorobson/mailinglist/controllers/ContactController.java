@@ -31,7 +31,6 @@ import static org.springframework.data.domain.Sort.Direction.valueOf;
 
 @RestController
 @RequestMapping("/contacts")
-@CrossOrigin(origins = "*")
 public class ContactController {
 
     private static final Logger log = getLogger(ContactController.class);
@@ -44,7 +43,7 @@ public class ContactController {
 
     public ContactController() {}
 
-    @PostMapping("filter")
+    @PostMapping(value = "/filter")
     public ResponseEntity<Response<Page<ContactDto>>> findAllByFilter(
             @RequestParam(value = "pag", defaultValue = "0") int pag,
             @RequestParam(value = "ord", defaultValue = "userNameInstagram") String ord,

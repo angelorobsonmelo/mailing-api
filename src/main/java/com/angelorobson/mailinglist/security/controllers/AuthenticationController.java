@@ -62,7 +62,7 @@ public class AuthenticationController {
 
 		log.info("Generating token for email {}.", authenticationDto.getEmail());
 		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-				authenticationDto.getEmail(), authenticationDto.getSenha()));
+				authenticationDto.getEmail(), authenticationDto.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
 		UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationDto.getEmail());
