@@ -29,9 +29,15 @@ import static java.util.Optional.of;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.angelorobson.mailinglist.cors.*;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -44,6 +50,9 @@ public class CategoryControllerTest {
 
   @MockBean
   private CategoryService categoryService;
+
+  @MockBean
+ private CorsFilter corsFilter;
 
   private static final String URL_BASE = "/categories";
 
@@ -70,7 +79,7 @@ public class CategoryControllerTest {
   @WithMockUser
   public void it_shold_return_returned() throws Exception {
     given(categoryService.findAll(any(PageRequest.class))).willReturn(pagedResponse);
-    
+
     mockMvc.perform(get(URL_BASE))
       .andExpect(status().isOk())
       .andExpect(jsonPath("$.data.content[0].category").value(partner.getCategory()))

@@ -21,7 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -48,11 +47,12 @@ public class ContactController {
             @RequestParam(value = "pag", defaultValue = "0") int pag,
             @RequestParam(value = "ord", defaultValue = "userNameInstagram") String ord,
             @RequestParam(value = "dir", defaultValue = "ASC") String dir,
+            @RequestParam(value = "perPage", defaultValue = "25") String perPage,
             @RequestBody ContactFilter contactFilter) {
         log.info("Searching for functions page: {}", pag);
         Response<Page<ContactDto>> response = new Response<>();
 
-        Pageable pageRequest = new PageRequest(pag, this.quantityPerPage, valueOf(dir), ord);
+        Pageable pageRequest = new PageRequest(pag, Integer.valueOf(perPage), valueOf(dir), ord);
         Page<Contact> contactsReturned = this.contactService.findAllByfilter(contactFilter, pageRequest);
 
        Page<ContactDto> contactDtos = contactsReturned.map(this::convertContactEntityToDto);
