@@ -26,36 +26,50 @@ import static org.springframework.data.domain.Sort.Direction.valueOf;
 @CrossOrigin(origins = "*")
 public class FunctionController {
 
-  private static final Logger log = getLogger(FunctionController.class);
+    private static final Logger log = getLogger(FunctionController.class);
 
-  @Autowired
-  private FunctionService functionService;
+    @Autowired
+    private FunctionService functionService;
 
-  @Value("${pagination.quantity_per_page}")
-  private int quantityPerPage;
+    @Value("${pagination.quantity_per_page}")
+    private int quantityPerPage;
 
-  public FunctionController() {
-  }
+    public FunctionController() {
+    }
 
-  /**
-   * Return list of function
-   *
-   * @return ResponseEntity<Response<Page<Function>>>
-   */
-  @GetMapping
-  public ResponseEntity<Response<Page<Function>>> findAll(
-    @RequestParam(value = "pag", defaultValue = "0") int pag,
-    @RequestParam(value = "ord", defaultValue = "function") String ord,
-    @RequestParam(value = "dir", defaultValue = "ASC") String dir) {
-    log.info("Searching for functions page: {}", pag);
-    Response<Page<Function>> response = new Response<>();
+    /**
+     * Return list of function
+     *
+     * @return ResponseEntity<Response < Page < Function>>>
+     */
+    @GetMapping
+    public ResponseEntity<Response<Page<Function>>> findAll(
+            @RequestParam(value = "pag", defaultValue = "0") int pag,
+            @RequestParam(value = "ord", defaultValue = "function") String ord,
+            @RequestParam(value = "dir", defaultValue = "ASC") String dir) {
+        log.info("Searching for functions page: {}", pag);
+        Response<Page<Function>> response = new Response<>();
 
-    PageRequest pageRequest = new PageRequest(pag, this.quantityPerPage, valueOf(dir), ord);
-    Page<Function> userAppDtos = this.functionService.findAll(pageRequest);
+        PageRequest pageRequest = new PageRequest(pag, this.quantityPerPage, valueOf(dir), ord);
+        Page<Function> userAppDtos = this.functionService.findAll(pageRequest);
 
-    response.setData(userAppDtos);
-    return ResponseEntity.ok(response);
-  }
+        response.setData(userAppDtos);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Response<Function>> findById(@PathVariable("id") Long id) {
+        log.info("Searching by id: {}", id);
+        Response<Function> response = new Response<>();
+
+        Optional<Function> functionReturned = this.functionService.findById(id);
+        if (functionReturned.isPresent()) {
+            response.setData(functionReturned.get());
+            return ResponseEntity.ok(response);
+        }
+
+        return ResponseEntity.notFound().build();
+    }
 
   /**
    * Adds a new user.

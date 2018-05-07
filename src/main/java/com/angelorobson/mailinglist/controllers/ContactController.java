@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -75,6 +76,21 @@ public class ContactController {
 
         response.setData(contactDto);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Response<ContactDto>> findById(@PathVariable("id") Long id) {
+        log.info("Searching by id: {}", id);
+        Response<ContactDto> response = new Response<>();
+
+        Optional<Contact> contactDataBaseReturned = this.contactService.findById(id);
+        if (contactDataBaseReturned.isPresent()) {
+          ContactDto contactDto = convertContactEntityToDto(contactDataBaseReturned.get());
+            response.setData(contactDto);
+            return ResponseEntity.ok(response);
+        }
+
+        return ResponseEntity.notFound().build();
     }
 
     @PutMapping(value = "/{id}")

@@ -65,6 +65,20 @@ public class UserAppController {
     return ResponseEntity.ok(response);
   }
 
+  @GetMapping(value = "/{id}")
+  public ResponseEntity<Response<UserAppDto>> findById(@PathVariable("id") Long id) {
+    log.info("Searching by id: {}", id);
+    Response<UserAppDto> response = new Response<>();
+
+    Optional<UserApp> userAppReturned = this.userAppService.findById(id);
+    if (userAppReturned.isPresent()) {
+      UserAppDto userAppDto = convertUserAppToDto(userAppReturned.get());
+      response.setData(userAppDto);
+      return ResponseEntity.ok(response);
+    }
+
+    return ResponseEntity.notFound().build();
+  }
 
   /**
    * Adds a new user.
@@ -208,5 +222,15 @@ public class UserAppController {
     }
 
     return userApp;
+  }
+
+  private UserAppDto convertUserAppToDto(UserApp userApp) {
+    UserAppDto userAppDto = new UserAppDto();
+    userAppDto.setId(userApp.getId());
+    userAppDto.setFirstName(userApp.getFirstName());
+    userAppDto.setLastName(userApp.getLastName());
+    userAppDto.setEmail(userApp.getEmail());
+
+    return userAppDto;
   }
 }

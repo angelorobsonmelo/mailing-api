@@ -57,6 +57,20 @@ public class CategoryController {
     return ResponseEntity.ok(response);
   }
 
+  @GetMapping(value = "/{id}")
+  public ResponseEntity<Response<Category>> findById(@PathVariable("id") Long id) {
+    log.info("Searching by id: {}", id);
+    Response<Category> response = new Response<>();
+
+    Optional<Category> categoryReturned = this.categoryService.findById(id);
+    if (categoryReturned.isPresent()) {
+      response.setData(categoryReturned.get());
+      return ResponseEntity.ok(response);
+    }
+
+    return ResponseEntity.notFound().build();
+  }
+
   /**
    * Adds a new user.
    *
