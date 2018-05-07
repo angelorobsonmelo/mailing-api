@@ -45,7 +45,7 @@ public class ContactController {
     @PostMapping(value = "/filter")
     public ResponseEntity<Response<Page<ContactDto>>> findAllByFilter(
             @RequestParam(value = "pag", defaultValue = "0") int pag,
-            @RequestParam(value = "ord", defaultValue = "userNameInstagram") String ord,
+            @RequestParam(value = "ord", defaultValue = "id") String ord,
             @RequestParam(value = "dir", defaultValue = "ASC") String dir,
             @RequestParam(value = "perPage", defaultValue = "25") String perPage,
             @RequestBody ContactFilter contactFilter) {
