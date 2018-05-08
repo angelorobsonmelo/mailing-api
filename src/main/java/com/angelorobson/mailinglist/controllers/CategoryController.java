@@ -18,6 +18,7 @@ import javax.validation.Valid;
 import java.text.ParseException;
 import java.util.Optional;
 
+import static java.lang.Integer.*;
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.beans.BeanUtils.copyProperties;
 
@@ -46,11 +47,13 @@ public class CategoryController {
   public ResponseEntity<Response<Page<Category>>> findAll(
     @RequestParam(value = "pag", defaultValue = "0") int pag,
     @RequestParam(value = "ord", defaultValue = "category") String ord,
-    @RequestParam(value = "dir", defaultValue = "ASC") String dir) {
+    @RequestParam(value = "dir", defaultValue = "ASC") String dir,
+    @RequestParam(value = "perPage", defaultValue = "25") String perPage
+    ) {
     log.info("Searching for users page: {}", pag);
     Response<Page<Category>> response = new Response<>();
 
-    PageRequest pageRequest = new PageRequest(pag, this.quantityPerPage, Sort.Direction.valueOf(dir), ord);
+    PageRequest pageRequest = new PageRequest(pag, parseInt(perPage), Sort.Direction.valueOf(dir), ord);
     Page<Category> userAppDtos = this.categoryService.findAll(pageRequest);
 
     response.setData(userAppDtos);

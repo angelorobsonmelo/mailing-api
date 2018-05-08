@@ -167,14 +167,13 @@ public class ContactController {
 
     private List<Function> convertToFunctionsEntity(List<Long> functionsId) {
         List<Function> functions = new ArrayList<>();
-        Function function;
 
-        for (Long id: functionsId) {
-            function = new Function();
+        functionsId.forEach(id -> {
+            Function function = new Function();
             function.setId(id);
 
             functions.add(function);
-        }
+        });
 
         return functions;
     }
