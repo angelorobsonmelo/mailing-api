@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/angelorobsonmelo/mailing-api.svg?branch=master)](https://travis-ci.org/angelorobsonmelo/mailing-api)
 ## Mailing List
- It is a system for registering contacts, partners or candidates for any function.
- Mailing List system API with Java and Spring Boot.
+ System for managing surveys, ads within the organization.
+ Booby system API with Java and Spring Boot.
  ### RESTful API Details
 The RESTful API for Mailing List contains the following features:
 * Project created with Spring Boot and Java 8
